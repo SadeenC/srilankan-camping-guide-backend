@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   first_name:{
     type: String,
     required: false
@@ -37,6 +37,12 @@ const UserSchema = new Schema({
     default: false
   }
 }, {timestamps: true});
+
+UserSchema.pre('save',async function(next){
+   const salt = await bcrypt.genSalt()
+   this.password = await bcrypt.hash(this.password,salt)
+   next()
+})
 
 const userModel = mongoose.model("User", UserSchema)
 
