@@ -1,9 +1,12 @@
 require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose')
+const authRouter = require('./route/authRoute')
 
 
 const app = express()
+
+app.use("/auth",authRouter)
 
 app.get('/',(req,res)=>{
     res.send("Hello World")
