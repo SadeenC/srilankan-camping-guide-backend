@@ -44,12 +44,12 @@ UserSchema.pre('save',async function(next){
    next()
 })
 
-UserSchema.static.login = async function(email,password){
-    const user = this.findOne({email})
+UserSchema.statics.login = async function(email,password){
+    const user = await this.findOne({email})
     if (user) {
-      const isCorrect = await bcrypt.compare(user.password,password)
+      const isCorrect = await bcrypt.compare(password,user.password)
       if (!isCorrect) throw Error("wrong password")
-      else return user;
+      return user;
     }
     else throw Error("user not found")
 }
